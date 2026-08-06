@@ -1,0 +1,32 @@
+{
+  "name": "healthpath-malaysia",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "start": "node --env-file-if-exists=.env server-entry.mjs",
+    "start:sqlite": "node --env-file-if-exists=.env server.js",
+    "start:postgres": "node --env-file-if-exists=.env server-postgres.mjs",
+    "seed": "node db/seed.mjs",
+    "seed:postgres": "node --env-file-if-exists=.env db/seed-postgres.mjs",
+    "check:db": "node db/check.mjs",
+    "check:postgres": "node --env-file-if-exists=.env db/check-postgres.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "recharts": "^3.6.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.1",
+    "vite": "^7.1.12"
+  }
+}
