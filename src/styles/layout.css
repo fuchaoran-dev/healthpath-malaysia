@@ -1,0 +1,106 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px clamp(18px, 4vw, 64px);
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid #dce8e3;
+  backdrop-filter: blur(12px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  background: none;
+  color: #08766e;
+  font-weight: 800;
+  font-size: 18px;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.brand em {
+  color: #d06b3d;
+  font-style: normal;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: #08766e;
+  color: white;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.nav-links {
+  display: flex;
+  gap: 5px;
+  flex: 1;
+  justify-content: center;
+}
+
+.hero,
+.content-page,
+.narrow-page,
+.feature-grid {
+  width: min(1180px, calc(100% - 36px));
+  margin: 0 auto;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  align-items: center;
+  gap: 70px;
+  min-height: 600px;
+  padding: 70px 0;
+}
+
+.narrow-page {
+  max-width: 720px;
+  padding: 70px 0;
+}
+
+.narrow-page h1,
+.content-page h1 {
+  font-size: clamp(38px, 6vw, 58px);
+}
+
+.content-page {
+  padding: 58px 0 80px;
+}
+
+.page-heading,
+.section-heading,
+.indicator-top,
+.assistant-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.page-heading {
+  margin-bottom: 28px;
+}
+
+.page-heading h1 {
+  margin-bottom: 10px;
+}
+
+footer {
+  padding: 25px 18px;
+  border-top: 1px solid #dce8e3;
+  color: #78908a;
+  text-align: center;
+  font-size: 12px;
+}

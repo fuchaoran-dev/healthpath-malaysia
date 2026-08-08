@@ -1,0 +1,72 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color: #142b2a;
+  background: #f5f8f6;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #153f3b;
+  font-size: clamp(38px, 6vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: #08766e;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.hero-text,
+.lead {
+  max-width: 680px;
+  color: #5d7671;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.disclaimer {
+  margin: 28px 0;
+  color: #6d807c;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.small-note,
+.chart-note,
+.feature-grid p,
+.source-card p {
+  color: #657c77;
+  line-height: 1.55;
+}

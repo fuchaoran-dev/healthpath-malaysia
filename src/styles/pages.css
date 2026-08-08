@@ -1,0 +1,298 @@
+.hero-panel {
+  display: grid;
+  gap: 13px;
+  padding: 22px;
+  border-radius: 28px;
+  background: linear-gradient(145deg, #0b766d, #16443f);
+  color: white;
+  box-shadow: 0 25px 60px rgba(12, 76, 68, 0.24);
+}
+
+.hero-stat {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.19);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hero-stat strong {
+  min-width: 74px;
+  color: #f0b78e;
+  font-size: 34px;
+  letter-spacing: -0.04em;
+}
+
+.hero-stat span {
+  color: #d8eeea;
+  line-height: 1.4;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  padding-bottom: 70px;
+}
+
+.feature-grid article {
+  padding: 24px;
+}
+
+.feature-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 18px;
+  border-radius: 13px;
+  background: #e3f1eb;
+  color: #08766e;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 18px 0 28px;
+}
+
+.profile-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.profile-summary span {
+  border-radius: 99px;
+  background: #e3f1eb;
+  color: #267068;
+  padding: 8px 12px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.indicator-card {
+  margin: 16px 0;
+  padding: 24px;
+}
+
+.indicator-top {
+  align-items: center;
+  margin-bottom: 17px;
+}
+
+.indicator-top > div {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.indicator-title .eyebrow {
+  margin-bottom: 4px;
+}
+
+.indicator-title h2 {
+  margin: 0;
+}
+
+.indicator-card > p {
+  color: #58726d;
+  line-height: 1.55;
+}
+
+.contribution-list,
+.mortality-box,
+.comparison-box {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.contribution-list {
+  background: #f2f8f5;
+}
+
+.contribution-list span,
+.mortality-box span {
+  color: #4d6c65;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+.comparison-box {
+  grid-template-columns: minmax(160px, 0.5fr) 1fr;
+  align-items: center;
+  background: #fff8f2;
+}
+
+.comparison-box div {
+  display: grid;
+  gap: 5px;
+}
+
+.comparison-box span {
+  color: #ad592f;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.comparison-box p {
+  margin: 0;
+  color: #6d655e;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.mortality-box {
+  background: #eef4f9;
+}
+
+.assistant-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.recommendation-section {
+  margin-top: 44px;
+}
+
+.recommendation-card {
+  position: relative;
+  margin: 13px 0;
+  padding: 20px 22px;
+}
+
+.recommendation-card h3 {
+  margin: 12px 0 8px;
+  color: #153f3b;
+}
+
+.recommendation-card p {
+  color: #5d7671;
+  line-height: 1.5;
+}
+
+.recommendation-card .why,
+.recommendation-card .first-step {
+  margin-bottom: 0;
+  font-size: 13px;
+}
+
+.first-step {
+  color: #08766e !important;
+}
+
+.assistant-card {
+  margin-top: 20px;
+  padding: 21px;
+}
+
+.assistant-card p {
+  color: #4d6c65;
+  line-height: 1.6;
+}
+
+.assistant-card small {
+  color: #08766e;
+}
+
+.report-sources {
+  margin-top: 38px;
+}
+
+.report-sources a {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 13px 0;
+  border-bottom: 1px solid #dce8e3;
+  color: #08766e;
+  text-decoration: none;
+}
+
+.report-sources a span {
+  color: #718681;
+  font-size: 13px;
+}
+
+.source-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.source-card {
+  padding: 22px;
+}
+
+.source-card a {
+  color: #08766e;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.goal-picker {
+  display: grid;
+  gap: 6px;
+  padding: 22px;
+}
+
+.goal-picker .primary-button {
+  margin-top: 12px;
+  width: fit-content;
+}
+
+.goal-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.goal-card {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+}
+
+.goal-card h3 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+
+.goal-card small {
+  color: #718681;
+}
+
+.goal-card label {
+  display: grid;
+  gap: 5px;
+  color: #718681;
+  font-size: 12px;
+}
+
+.goal-card input {
+  accent-color: #08766e;
+}
+
+.goal-card > strong {
+  color: #08766e;
+}

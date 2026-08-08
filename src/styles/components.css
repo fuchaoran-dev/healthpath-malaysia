@@ -1,0 +1,282 @@
+.nav-links button,
+.clear-button {
+  border: 0;
+  border-radius: 99px;
+  background: transparent;
+  color: #52706b;
+  padding: 9px 12px;
+  font-size: 13px;
+}
+
+.nav-links button:hover,
+.nav-links .active {
+  background: #e3f1eb;
+  color: #08766e;
+}
+
+.clear-button {
+  border: 1px solid #c8d9d2;
+  white-space: nowrap;
+}
+
+.hero-actions,
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 30px 0;
+}
+
+.primary-button,
+.secondary-button {
+  border-radius: 99px;
+  padding: 13px 19px;
+  font-weight: 750;
+  transition: transform 0.16s, box-shadow 0.16s;
+}
+
+.primary-button {
+  border: 0;
+  background: #08766e;
+  color: white;
+  box-shadow: 0 8px 20px rgba(8, 118, 110, 0.18);
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(8, 118, 110, 0.25);
+}
+
+.primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+}
+
+.secondary-button {
+  border: 1px solid #bfd3ca;
+  background: white;
+  color: #08766e;
+}
+
+.secondary-button:hover {
+  background: #eaf5f1;
+}
+
+.full {
+  width: 100%;
+}
+
+.feature-grid article,
+.notice-card,
+.form-card,
+.chart-card,
+.stat-card,
+.indicator-card,
+.recommendation-card,
+.source-card,
+.goal-picker,
+.goal-card,
+.assistant-card,
+.empty-card {
+  border: 1px solid #dce8e3;
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 10px 30px rgba(19, 70, 63, 0.04);
+}
+
+.notice-card,
+.form-card {
+  padding: clamp(22px, 4vw, 36px);
+}
+
+.notice-card h3 {
+  margin: 22px 0 8px;
+  color: #153f3b;
+}
+
+.notice-card h3:first-child {
+  margin-top: 0;
+}
+
+.notice-card li {
+  margin: 9px 0;
+  color: #5d7671;
+  line-height: 1.5;
+}
+
+.consent-check,
+.toggle,
+.goal-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 0;
+  color: #355954;
+  line-height: 1.5;
+}
+
+.consent-check input,
+.toggle input,
+.goal-option input {
+  margin-top: 3px;
+  accent-color: #08766e;
+}
+
+.form-card {
+  display: grid;
+  gap: 22px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  color: #355954;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.field input,
+.field select,
+.state-select {
+  width: 100%;
+  border: 1px solid #c7d8d1;
+  border-radius: 12px;
+  background: #fbfdfc;
+  color: #183e39;
+  padding: 12px 14px;
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus,
+.state-select:focus {
+  border-color: #08766e;
+  box-shadow: 0 0 0 3px #d4eee6;
+}
+
+fieldset {
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+legend {
+  margin-bottom: 10px;
+  color: #153f3b;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.field-error {
+  color: #b44734;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.chip {
+  border: 1px solid #c7d8d1;
+  border-radius: 99px;
+  background: white;
+  color: #476963;
+  padding: 9px 13px;
+  text-transform: capitalize;
+}
+
+.chip.selected {
+  border-color: #08766e;
+  background: #08766e;
+  color: white;
+}
+
+.state-select {
+  width: 190px;
+}
+
+.chart-card {
+  min-width: 0;
+  padding: 20px;
+}
+
+.chart-card h2,
+.indicator-card h2,
+.recommendation-section h2,
+.source-card h2,
+.goal-picker h2,
+.notice-card h2 {
+  color: #153f3b;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+.chart-note {
+  margin: 10px 0 0;
+  font-size: 12px;
+}
+
+.stat-card {
+  padding: 18px;
+}
+
+.stat-card span,
+.stat-card small {
+  display: block;
+  color: #6b817b;
+  font-size: 12px;
+}
+
+.stat-card strong {
+  display: block;
+  margin: 8px 0;
+  color: #08766e;
+  font-size: 28px;
+}
+
+.priority-number {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+  background: #08766e;
+  color: white;
+  font-size: 23px;
+  font-weight: 850;
+}
+
+.priority-score {
+  border-radius: 99px;
+  background: #fff1e9;
+  color: #ad592f;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.assistant-buttons button,
+.assistant-head button,
+.text-button {
+  border: 0;
+  border-radius: 99px;
+  background: #e5f1ed;
+  color: #08766e;
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.priority-tag,
+.source-year {
+  color: #ad592f;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

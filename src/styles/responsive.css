@@ -1,0 +1,87 @@
+@media (max-width: 840px) {
+  .site-header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .nav-links {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    min-height: auto;
+    padding: 55px 0;
+  }
+
+  .hero-panel {
+    max-width: 600px;
+  }
+
+  .feature-grid,
+  .chart-grid,
+  .source-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-heading {
+    flex-direction: column;
+  }
+
+  .state-select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero,
+  .content-page,
+  .narrow-page,
+  .feature-grid {
+    width: min(100% - 28px, 1180px);
+  }
+
+  .site-header {
+    padding: 13px 14px;
+  }
+
+  .clear-button {
+    margin-left: auto;
+  }
+
+  h1 {
+    font-size: 42px;
+  }
+
+  .hero-actions,
+  .button-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primary-button,
+  .secondary-button {
+    text-align: center;
+  }
+
+  .stat-row {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-box {
+    grid-template-columns: 1fr;
+  }
+
+  .indicator-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .goal-card {
+    grid-template-columns: 1fr;
+  }
+}
