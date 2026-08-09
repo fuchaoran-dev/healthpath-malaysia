@@ -303,6 +303,10 @@ export default function Report({
                 {
                   item.priority_position
                 }
+                {" · Addresses "}
+                {
+                  item.indicator_name
+                }
               </span>
 
               <h3>
