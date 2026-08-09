@@ -6,9 +6,10 @@ dist/
 .env.*
 !.env.example
 .DS_Store
-package-lock.json
 .claude/
 CLAUDE.md
 .codex/
 AGENTS.md
 .github/copilot-instructions.md
+pnpm-lock.yaml
+pnpm-workspace.yaml
