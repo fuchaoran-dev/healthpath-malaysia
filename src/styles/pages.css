@@ -74,13 +74,23 @@
   margin-bottom: 20px;
 }
 
+.profile-summary .eyebrow {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+/* Each chip now carries its own label, so sentence case rather than the
+   capitalisation that stood in for a label before. */
 .profile-summary span {
   border-radius: 99px;
   background: #e3f1eb;
   color: #267068;
   padding: 8px 12px;
   font-size: 12px;
-  text-transform: capitalize;
+}
+
+.profile-summary strong {
+  font-weight: 700;
 }
 
 .indicator-card {
@@ -161,11 +171,159 @@
   background: #eef4f9;
 }
 
+/* Dataset name and reference year for the figure printed directly above, so a
+   statistic carries its provenance where it is read rather than only in the
+   source list at the foot of the report. */
+.comparison-box small,
+.mortality-box small {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+.comparison-box small {
+  color: #6d655e;
+}
+
+.mortality-box small {
+  color: #4d6c65;
+}
+
 .assistant-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 18px;
+}
+
+.box-explain {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin-top: 4px;
+}
+
+.assistant-launcher {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 20;
+  border: 0;
+  border-radius: 99px;
+  background: #08766e;
+  color: white;
+  padding: 14px 20px;
+  font-weight: 750;
+  box-shadow: 0 12px 28px rgba(8, 118, 110, 0.3);
+}
+
+.assistant-launcher:hover {
+  background: #0b8b81;
+}
+
+.assistant-dock {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 21;
+  display: flex;
+  flex-direction: column;
+  width: min(390px, calc(100vw - 44px));
+  max-height: min(580px, calc(100vh - 44px));
+  overflow: hidden;
+}
+
+.assistant-dock .assistant-head {
+  align-items: center;
+  gap: 12px;
+  padding: 15px 17px;
+  border-bottom: 1px solid #dce8e3;
+}
+
+.assistant-dock .assistant-head h2 {
+  margin: 0;
+  color: #153f3b;
+  font-size: 17px;
+}
+
+.assistant-dock .assistant-notice {
+  border-radius: 0;
+  border-bottom: 1px solid #dce8e3;
+}
+
+.assistant-thread {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  overflow-y: auto;
+  padding: 16px 17px;
+}
+
+.assistant-message {
+  max-width: 88%;
+  padding: 11px 13px;
+  border-radius: 15px;
+}
+
+.assistant-message p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.assistant-message.user {
+  justify-self: end;
+  border-bottom-right-radius: 5px;
+  background: #08766e;
+  color: white;
+}
+
+.assistant-message.assistant {
+  justify-self: start;
+  border-bottom-left-radius: 5px;
+  background: #f2f8f5;
+  color: #3c5c56;
+}
+
+.assistant-message small {
+  display: block;
+  margin-top: 7px;
+  color: #08766e;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.assistant-message-note {
+  color: #7d6a5c !important;
+}
+
+.assistant-composer {
+  display: flex;
+  gap: 8px;
+  padding: 13px 17px;
+  border-top: 1px solid #dce8e3;
+}
+
+.assistant-composer input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #c7d8d1;
+  border-radius: 12px;
+  background: #fbfdfc;
+  color: #183e39;
+  padding: 11px 13px;
+  outline: none;
+}
+
+.assistant-composer input:focus {
+  border-color: #08766e;
+  box-shadow: 0 0 0 3px #d4eee6;
+}
+
+.assistant-composer .primary-button {
+  padding: 11px 17px;
 }
 
 .recommendation-section {
@@ -198,18 +356,8 @@
   color: #08766e !important;
 }
 
-.assistant-card {
-  margin-top: 20px;
-  padding: 21px;
-}
-
-.assistant-card p {
-  color: #4d6c65;
-  line-height: 1.6;
-}
-
-.assistant-card small {
-  color: #08766e;
+.recommendation-card .text-button {
+  margin-top: 14px;
 }
 
 .report-sources {

@@ -178,6 +178,7 @@ export default function App() {
       <Report
         result={result}
         setPage={setPage}
+        sessionId={sessionId}
         cloudEnabled={cloudEnabled}
       />
     );

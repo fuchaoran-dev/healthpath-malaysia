@@ -6,6 +6,7 @@
   "engines": {
     "node": ">=22.5.0"
   },
+  "packageManager": "npm@11.16.0",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",

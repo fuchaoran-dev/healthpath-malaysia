@@ -9,3 +9,7 @@ services:
         sync: false
       - key: DATABASE_SSL
         value: "true"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: "gemini-flash-latest"

@@ -74,6 +74,10 @@ export default function IndicatorCard({
               {" · "}
               {ref.reference_year}
             </span>
+
+            <small>
+              {ref.dataset_name}
+            </small>
           </div>
 
           <p>
@@ -81,6 +85,20 @@ export default function IndicatorCard({
             population reference, not an
             individual target.
           </p>
+
+          <button
+            className="text-button box-explain"
+            onClick={() =>
+              onExplain(
+                "reference",
+                indicator.indicator_id,
+                "explain",
+                `${indicator.indicator_name} — Malaysian reference value`
+              )
+            }
+          >
+            Explain this figure
+          </button>
         </div>
       )}
 
@@ -104,9 +122,28 @@ export default function IndicatorCard({
                   ? "Malaysia"
                   : `DOSM age band ${item.age_group}`}
                 )
+                <small>
+                  {item.dataset_name}
+                  {" · "}
+                  {item.year}
+                </small>
               </span>
             )
           )}
+
+          <button
+            className="text-button box-explain"
+            onClick={() =>
+              onExplain(
+                "mortality",
+                indicator.indicator_id,
+                "explain",
+                `${indicator.indicator_name} — population mortality context`
+              )
+            }
+          >
+            Explain this figure
+          </button>
         </div>
       )}
 
@@ -114,8 +151,10 @@ export default function IndicatorCard({
         <button
           onClick={() =>
             onExplain(
+              "indicator",
               indicator.indicator_id,
-              "explain"
+              "explain",
+              indicator.indicator_name
             )
           }
         >
@@ -125,8 +164,10 @@ export default function IndicatorCard({
         <button
           onClick={() =>
             onExplain(
+              "indicator",
               indicator.indicator_id,
-              "why"
+              "why",
+              indicator.indicator_name
             )
           }
         >
@@ -136,8 +177,10 @@ export default function IndicatorCard({
         <button
           onClick={() =>
             onExplain(
+              "indicator",
               indicator.indicator_id,
-              "simpler"
+              "simpler",
+              indicator.indicator_name
             )
           }
         >
