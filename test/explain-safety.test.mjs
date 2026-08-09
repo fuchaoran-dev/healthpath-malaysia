@@ -136,3 +136,38 @@ test("the assembled fallback is never itself out of scope", () => {
   const reply = assembleExplanation(buildContextPack({ target_type: "recommendation", kind: "explain", ...rows }));
   assert.equal(checkOutOfScope(reply), false);
 });
+
+test("the assembled fallback explains a clinical term it takes from seeded copy", () => {
+  const reply = assembleExplanation(buildContextPack({ target_type: "mortality", kind: "explain", ...rows }));
+  assert.match(reply, /Ischaemic heart diseases \(heart problems caused by reduced blood flow\)/);
+  assert.match(reply, /medically certified deaths \(deaths where a doctor recorded the cause\)/);
+});
+
+test("the assembled fallback explains a clinical term in a reference interpretation", () => {
+  const cholesterol = {
+    indicator: { indicator_name: "Cholesterol Health", description: "Reference indicator for cholesterol prevention context." },
+    reference: { reference_value: 33.3, unit: "percent", reference_year: 2023, interpretation: "Hypercholesterolaemia prevalence among Malaysian adults.", dataset_name: "NHMS 2023 Fact Sheet", organisation: "Institute for Public Health" },
+  };
+  const reply = assembleExplanation(buildContextPack({ target_type: "reference", kind: "explain", ...cholesterol }));
+  assert.match(reply, /Hypercholesterolaemia \(too much cholesterol in the blood\)/);
+  assert.match(reply, /prevalence \(how common something is across a population\)/);
+});
+
+test("a term the fallback explains is explained once, not at every mention", () => {
+  const repeated = {
+    indicator: { indicator_name: "Blood Pressure Health", description: "Hypertension context for preventive prioritisation." },
+    reference: { reference_value: 29.2, unit: "percent", reference_year: 2023, interpretation: "Hypertension prevalence among Malaysian adults.", dataset_name: "NHMS 2023 Fact Sheet", organisation: "Institute for Public Health" },
+  };
+  const reply = assembleExplanation(buildContextPack({ target_type: "indicator", kind: "explain", ...repeated }));
+  assert.equal(reply.match(/\(high blood pressure\)/g).length, 1);
+});
+
+test("explaining a clinical term introduces no number of its own", () => {
+  for (const kind of ["explain", "why", "simpler"]) {
+    for (const targetType of ["indicator", "reference", "mortality", "recommendation"]) {
+      const reply = assembleExplanation(buildContextPack({ target_type: targetType, kind, ...rows }));
+      assert.equal(verifyGrounded(reply, pack), true, `${targetType}/${kind} introduced a number`);
+      assert.equal(checkOutOfScope(reply), false, `${targetType}/${kind} became out of scope`);
+    }
+  }
+});

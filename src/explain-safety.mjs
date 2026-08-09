@@ -200,6 +200,30 @@ export function verifyGrounded(reply, pack) {
   return numbersIn(reply).every((value) => allowed.has(value));
 }
 
+// The assembled fallback splices seeded copy straight into the reply, and that
+// copy carries clinical terms a reader with no medical background may not know.
+// The generated path is instructed to explain a term the moment it uses one;
+// this gives the fallback the same behaviour. Every gloss must be digit-free —
+// an assembled reply is still checked against the numbers in the context pack.
+const CLINICAL_TERMS = [
+  [/\bhypercholesterolaemia\b/i, "too much cholesterol in the blood"],
+  [/\bhypertension\b/i, "high blood pressure"],
+  [/\bdiabetes mellitus\b/i, "the medical name for diabetes"],
+  [/\bischaemic heart diseases?\b/i, "heart problems caused by reduced blood flow"],
+  [/\bNCD\b/, "long-term illnesses such as diabetes and heart disease"],
+  [/\bprevalence\b/i, "how common something is across a population"],
+  [/\bmedically certified deaths\b/i, "deaths where a doctor recorded the cause"],
+  [/\bprioritisation\b/i, "deciding which areas to look at first"],
+];
+
+function explainClinicalTerms(text) {
+  let value = text;
+  // Each pattern is deliberately non-global: replace() then rewrites the first
+  // match only, so a term is explained once rather than at every mention.
+  for (const [pattern, gloss] of CLINICAL_TERMS) value = value.replace(pattern, (term) => `${term} (${gloss})`);
+  return value;
+}
+
 export function assembleExplanation(pack) {
   const { target_type: targetType, kind, indicator, reference, mortality, recommendation } = pack;
   const name = indicator?.indicator_name || "This item";
@@ -236,5 +260,5 @@ export function assembleExplanation(pack) {
   };
 
   const reply = replies[targetType]?.[kind] || replies.indicator.explain;
-  return reply.replace(/\s+/g, " ").trim();
+  return explainClinicalTerms(reply.replace(/\s+/g, " ").trim());
 }
