@@ -4,6 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Pool } from "pg";
 import { profileFactorValue, ruleMatches } from "./src/rules.mjs";
+import { EXPLAIN_DISCLAIMERS, EXPLANATION_KINDS, TARGET_TYPES, assembleExplanation, buildContextPack, checkOutOfScope, verifyGrounded } from "./src/explain-safety.mjs";
+import { allowGeneration, cacheExplanation, cachedExplanation, explainWithGemini } from "./src/explain-gemini.mjs";
 
 if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required when using the PostgreSQL server.");
 
@@ -275,27 +277,48 @@ app.post("/api/assess", async (req, res, next) => {
 
 app.post("/api/explain", async (req, res, next) => {
   try {
-    const { indicator_id: indicatorId, kind } = req.body || {};
-    const allowedKinds = ["explain", "why", "simpler"];
-    if (!allowedKinds.includes(kind) || typeof indicatorId !== "string") return res.status(400).json({ error: "Choose a displayed indicator and explanation type." });
-    const [{ rows: indicators }, reference, { rows: recommendations }, mortality] = await Promise.all([
+    const { target_type: targetType, target_id: targetId, kind, age_group: ageGroup, session_id: sessionId } = req.body || {};
+    if (!TARGET_TYPES.includes(targetType) || !EXPLANATION_KINDS.includes(kind) || typeof targetId !== "string") return res.status(400).json({ error: "Choose a displayed item and explanation type." });
+    if (!AGE_GROUPS.includes(ageGroup)) return res.status(400).json({ error: "The displayed age group is required." });
+
+    const profile = { age_group: ageGroup };
+    let recommendation = null;
+    if (targetType === "recommendation") {
+      const { rows } = await query("SELECT * FROM recommendations WHERE recommendation_id = $1", [targetId]);
+      recommendation = rows[0] || null;
+      if (!recommendation) return res.status(404).json({ error: "This item is not available in the database." });
+    }
+    const indicatorId = recommendation ? recommendation.indicator_id : targetId;
+    const [{ rows: indicators }, reference, mortality] = await Promise.all([
       query("SELECT * FROM health_indicators WHERE indicator_id = $1", [indicatorId]),
       referenceFor(indicatorId),
-      query("SELECT * FROM recommendations WHERE indicator_id = $1 ORDER BY recommendation_id LIMIT 1", [indicatorId]),
-      mortalityFor(indicatorId, { age_group: "40-44" }),
+      mortalityFor(indicatorId, profile),
     ]);
     const indicator = indicators[0];
-    if (!indicator || !reference) return res.status(404).json({ error: "This indicator is not available in the database." });
-    const recommendation = recommendations[0];
-    const context = `${indicator.indicator_name}: ${indicator.description} The Malaysian reference value is ${reference.reference_value}${reference.unit === "percent" ? "%" : ` ${reference.unit}`} in ${reference.reference_year}.`;
-    const action = recommendation ? `A displayed preventive action is: ${recommendation.action_title}.` : "No additional action is displayed for this indicator.";
-    const mortalityText = mortality[0] ? `The displayed population context is ${mortality[0].cause_name}, ${mortality[0].measure_value}% ${mortality[0].measure_unit.replaceAll("_", " ")}.` : "No linked mortality context is displayed for this indicator.";
-    const replies = {
-      explain: `${context} ${mortalityText} ${action}`,
-      why: `It was prioritised because the profile answer matched a documented rule for ${indicator.indicator_name}. ${action}`,
-      simpler: `${indicator.indicator_name} is an area to pay attention to based on the answers you gave. ${action}`,
-    };
-    res.json({ reply: replies[kind], source: reference.dataset_name, disclaimer: "AI-generated explanations are educational only and do not replace professional medical advice." });
+    if (!indicator || !reference) return res.status(404).json({ error: "This item is not available in the database." });
+    if (!recommendation) {
+      const { rows } = await query("SELECT * FROM recommendations WHERE indicator_id = $1 ORDER BY recommendation_id LIMIT 1", [indicatorId]);
+      recommendation = rows[0] || null;
+    }
+    if (targetType === "mortality" && !mortality.length) return res.status(404).json({ error: "This item is not available in the database." });
+
+    const pack = buildContextPack({ target_type: targetType, kind, indicator, reference, mortality, recommendation });
+    const source = targetType === "mortality" ? mortality[0].dataset_name : reference.dataset_name;
+    const cacheKey = `${targetType}:${targetId}:${kind}:${ageBandFor(profile) || "all"}`;
+    const cached = cachedExplanation(cacheKey);
+    if (cached) return res.json({ reply: cached, source, mode: "generated", disclaimer: EXPLAIN_DISCLAIMERS.generated });
+
+    let reply = assembleExplanation(pack);
+    let mode = "assembled";
+    if (allowGeneration(typeof sessionId === "string" ? sessionId.slice(0, 128) : "anonymous")) {
+      const generated = await explainWithGemini(pack);
+      if (generated && verifyGrounded(generated, pack) && !checkOutOfScope(generated)) {
+        cacheExplanation(cacheKey, generated);
+        reply = generated;
+        mode = "generated";
+      }
+    }
+    res.json({ reply, source, mode, disclaimer: EXPLAIN_DISCLAIMERS[mode] });
   } catch (error) { next(error); }
 });
 

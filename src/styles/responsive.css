@@ -84,4 +84,17 @@
   .goal-card {
     grid-template-columns: 1fr;
   }
+
+  .assistant-launcher {
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .assistant-dock {
+    right: 12px;
+    left: 12px;
+    bottom: 12px;
+    width: auto;
+    max-height: calc(100vh - 24px);
+  }
 }

@@ -1,15 +1,47 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
+import AssistantDock from "../components/AssistantDock";
 import Disclaimer from "../components/Disclaimer";
 import IndicatorCard from "../components/IndicatorCard";
+
+import {
+  DECLINE_REPLY,
+  EXPLAIN_DISCLAIMERS,
+  NO_MATCH_REPLY,
+  checkOutOfScope,
+  resolveQuestion,
+} from "../explain-safety.mjs";
+
+const KIND_PROMPTS = {
+  explain: "Explain",
+  why: "Why does this matter",
+  simpler: "Simpler explanation",
+};
 
 export default function Report({
   result,
   setPage,
+  sessionId,
   cloudEnabled,
 }) {
-  const [assistant, setAssistant] =
-    useState(null);
+  const [assistantOpen, setAssistantOpen] =
+    useState(false);
+
+  const [thread, setThread] = useState(
+    []
+  );
+
+  const [
+    assistantLoading,
+    setAssistantLoading,
+  ] = useState(false);
+
+  const [
+    assistantError,
+    setAssistantError,
+  ] = useState(null);
+
+  const messageId = useRef(0);
 
   if (!result) {
     return (
@@ -28,31 +60,132 @@ export default function Report({
     );
   }
 
-  async function explain(
-    indicator_id,
-    kind
-  ) {
-    const response = await fetch(
-      "/api/explain",
+  function pushMessage(message) {
+    messageId.current += 1;
+
+    setThread((current) => [
+      ...current,
       {
-        method: "POST",
+        id: messageId.current,
+        ...message,
+      },
+    ]);
+  }
 
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
+  async function explain(
+    target_type,
+    target_id,
+    kind,
+    label
+  ) {
+    if (assistantLoading) return;
 
-        body: JSON.stringify({
-          indicator_id,
-          kind,
-        }),
+    setAssistantOpen(true);
+    setAssistantError(null);
+    setAssistantLoading(true);
+
+    if (label) {
+      pushMessage({
+        role: "user",
+        text: `${KIND_PROMPTS[kind]}: ${label}`,
+      });
+    }
+
+    try {
+      const response = await fetch(
+        "/api/explain",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            target_type,
+            target_id,
+            kind,
+            age_group:
+              result.profile.age_group,
+            session_id: sessionId,
+          }),
+        }
+      );
+
+      const data =
+        await response.json();
+
+      if (!response.ok) {
+        setAssistantError(
+          data.error ||
+            "That explanation is not available."
+        );
+
+        return;
       }
+
+      pushMessage({
+        role: "assistant",
+        text: data.reply,
+        source: data.source,
+        // The pinned notice already says AI-generated; only flag a reply that
+        // was not, so the disclosure stays accurate per message.
+        note:
+          data.mode === "generated"
+            ? null
+            : data.disclaimer,
+      });
+    } catch {
+      setAssistantError(
+        "The explanation could not be loaded. Please try again."
+      );
+    } finally {
+      setAssistantLoading(false);
+    }
+  }
+
+  // The typed question is matched against this report in the browser and is
+  // never sent to our server or to any third party. It is kept in the thread
+  // for display only — each request to /api/explain is single-shot.
+  function ask(text) {
+    setAssistantError(null);
+
+    pushMessage({
+      role: "user",
+      text,
+    });
+
+    if (checkOutOfScope(text)) {
+      pushMessage({
+        role: "assistant",
+        text: DECLINE_REPLY,
+        note: EXPLAIN_DISCLAIMERS.declined,
+      });
+
+      return;
+    }
+
+    const target = resolveQuestion(
+      text,
+      result
     );
 
-    const data =
-      await response.json();
+    if (!target) {
+      pushMessage({
+        role: "assistant",
+        text: NO_MATCH_REPLY,
+        note: EXPLAIN_DISCLAIMERS.declined,
+      });
 
-    setAssistant(data);
+      return;
+    }
+
+    explain(
+      target.target_type,
+      target.target_id,
+      target.kind
+    );
   }
 
   return (
@@ -135,34 +268,6 @@ export default function Report({
         )
       )}
 
-      {assistant && (
-        <section className="assistant-card">
-          <div className="assistant-head">
-            <h2>
-              Explanation assistant
-            </h2>
-
-            <button
-              onClick={() =>
-                setAssistant(null)
-              }
-            >
-              Close
-            </button>
-          </div>
-
-          <p>{assistant.reply}</p>
-
-          <small>
-            {assistant.source}
-          </small>
-
-          <Disclaimer>
-            {assistant.disclaimer}
-          </Disclaimer>
-        </section>
-      )}
-
       <section className="recommendation-section">
         <div className="section-heading">
           <div>
@@ -223,6 +328,20 @@ export default function Report({
                 </strong>{" "}
                 {item.first_step}
               </p>
+
+              <button
+                className="text-button"
+                onClick={() =>
+                  explain(
+                    "recommendation",
+                    item.recommendation_id,
+                    "explain",
+                    item.action_title
+                  )
+                }
+              >
+                Explain this action
+              </button>
             </article>
           )
         )}
@@ -261,6 +380,20 @@ export default function Report({
       </section>
 
       <Disclaimer />
+
+      <AssistantDock
+        open={assistantOpen}
+        thread={thread}
+        loading={assistantLoading}
+        error={assistantError}
+        onOpen={() =>
+          setAssistantOpen(true)
+        }
+        onClose={() =>
+          setAssistantOpen(false)
+        }
+        onAsk={ask}
+      />
     </main>
   );
 }
