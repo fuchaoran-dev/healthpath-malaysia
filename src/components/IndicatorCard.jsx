@@ -74,6 +74,10 @@ export default function IndicatorCard({
               {" · "}
               {ref.reference_year}
             </span>
+
+            <small>
+              {ref.dataset_name}
+            </small>
           </div>
 
           <p>
@@ -118,6 +122,11 @@ export default function IndicatorCard({
                   ? "Malaysia"
                   : `DOSM age band ${item.age_group}`}
                 )
+                <small>
+                  {item.dataset_name}
+                  {" · "}
+                  {item.year}
+                </small>
               </span>
             )
           )}

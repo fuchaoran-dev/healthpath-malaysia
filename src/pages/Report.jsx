@@ -433,6 +433,16 @@ export default function Report({
         )}
       </section>
 
+      <section className="notice-card">
+        <h2>Scope statement</h2>
+
+        <p>
+          This report is educational. It is
+          not a medical record, a diagnosis
+          or a clinical assessment.
+        </p>
+      </section>
+
       <Disclaimer />
 
       <AssistantDock

@@ -171,6 +171,27 @@
   background: #eef4f9;
 }
 
+/* Dataset name and reference year for the figure printed directly above, so a
+   statistic carries its provenance where it is read rather than only in the
+   source list at the foot of the report. */
+.comparison-box small,
+.mortality-box small {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+.comparison-box small {
+  color: #6d655e;
+}
+
+.mortality-box small {
+  color: #4d6c65;
+}
+
 .assistant-buttons {
   display: flex;
   flex-wrap: wrap;
