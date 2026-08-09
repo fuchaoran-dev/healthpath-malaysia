@@ -12,6 +12,8 @@ import {
   resolveQuestion,
 } from "../explain-safety.mjs";
 
+import { formatFactor } from "../utils/formatters";
+
 const KIND_PROMPTS = {
   explain: "Explain",
   why: "Why does this matter",
@@ -188,6 +190,55 @@ export default function Report({
     );
   }
 
+  const { lifestyle } =
+    result.profile;
+
+  // Every answer the user gave, including the ones that matched no rule and so
+  // appear nowhere else on the page. Values go through the same helper the
+  // indicator cards use, so an answer reads identically in both places.
+  const profileInputs = {
+    "Age group":
+      result.profile.age_group,
+
+    Gender: formatFactor(
+      "gender",
+      result.profile.gender
+    ),
+
+    State: result.profile.state,
+
+    "Physical activity":
+      formatFactor(
+        "physical_activity",
+        lifestyle.physical_activity
+      ),
+
+    Sleep: `${lifestyle.sleep_hours} hours`,
+
+    "Currently smokes":
+      formatFactor(
+        "smoker",
+        lifestyle.smoker
+      ),
+
+    "Sugary food or drinks":
+      formatFactor(
+        "diet_high_sugar",
+        lifestyle.diet_high_sugar
+      ),
+
+    "Screening in the last year":
+      formatFactor(
+        "recent_screening",
+        lifestyle.recent_screening
+      ),
+
+    "Family history": formatFactor(
+      "family_history",
+      result.profile.family_history
+    ),
+  };
+
   return (
     <main className="content-page">
       <div className="page-heading">
@@ -218,20 +269,19 @@ export default function Report({
       </div>
 
       <div className="profile-summary">
-        <span>
-          {result.profile.age_group}
-        </span>
+        <h2 className="eyebrow">
+          Your answers
+        </h2>
 
-        <span>
-          {result.profile.gender.replaceAll(
-            "_",
-            " "
-          )}
-        </span>
-
-        <span>
-          {result.profile.state}
-        </span>
+        {Object.entries(
+          profileInputs
+        ).map(([label, value]) => (
+          <span key={label}>
+            <strong>{label}</strong>
+            {": "}
+            {value}
+          </span>
+        ))}
 
         <span>
           {cloudEnabled

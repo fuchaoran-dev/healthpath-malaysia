@@ -74,13 +74,23 @@
   margin-bottom: 20px;
 }
 
+.profile-summary .eyebrow {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+/* Each chip now carries its own label, so sentence case rather than the
+   capitalisation that stood in for a label before. */
 .profile-summary span {
   border-radius: 99px;
   background: #e3f1eb;
   color: #267068;
   padding: 8px 12px;
   font-size: 12px;
-  text-transform: capitalize;
+}
+
+.profile-summary strong {
+  font-weight: 700;
 }
 
 .indicator-card {
